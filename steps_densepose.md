@@ -8,15 +8,15 @@ coco/
     annotations/  
 
 #### train/val annotations
-wget http://images.cocodataset.org/annotations/annotations_trainval2014.zip
+wget http://images.cocodataset.org/annotations/annotations_trainval2014.zip  
 
 #### valminusminival2014, minival2014:
-wget https://storage.googleapis.com/coco-dataset/external/PASCAL_VOC.zip
+wget https://storage.googleapis.com/coco-dataset/external/PASCAL_VOC.zip  
 
 #### images
-cd path/to/coco/
-mkdir val2014 && gsutil -m rsync gs://images.cocodataset.org/val2014 val2014
-mkdir train2014 && gsutil -m rsync gs://images.cocodataset.org/train2014 train2014
+cd path/to/coco/  
+mkdir val2014 && gsutil -m rsync gs://images.cocodataset.org/val2014 val2014  
+mkdir train2014 && gsutil -m rsync gs://images.cocodataset.org/train2014 train2014  
 
 #### structure:   
 
@@ -36,34 +36,34 @@ mkdir train2014 && gsutil -m rsync gs://images.cocodataset.org/train2014 train20
 # Step 2: Set up DensePose
 
 ## get densepose
-DENSEPOSE=/home/austin/densepose
-git clone https://github.com/facebookresearch/densepose $DENSEPOSE
+DENSEPOSE=/home/austin/densepose  
+git clone https://github.com/facebookresearch/densepose $DENSEPOSE  
 
 ## get densepose annotations
-cd $DENSEPOSE/DensePoseData
-bash get_densepose_uv.sh
-bash get_DensePose_COCO.sh
-bash get_eval_data.sh
+cd $DENSEPOSE/DensePoseData  
+bash get_densepose_uv.sh  
+bash get_DensePose_COCO.sh  
+bash get_eval_data.sh  
 
 ## set up docker
-cd $DENSEPOSE/docker
-docker build -t densepose:c2-cuda9-cudnn7 .
+cd $DENSEPOSE/docker  
+docker build -t densepose:c2-cuda9-cudnn7 .  
 
-nvidia-docker run --rm -it densepose:c2-cuda9-cudnn7 python2 detectron/tests/test_batch_permutation_op.py
+nvidia-docker run --rm -it densepose:c2-cuda9-cudnn7 python2 detectron/tests/test_batch_permutation_op.py  
 
 ## modify docker
 
 #### enter container
-nvidia-docker run -v $DENSEPOSE/DensePoseData:/denseposedata -v /home/austin/coco:/coco -it densepose:c2-cuda9-cudnn7 bash
-mv /densepose/DensePoseData /densepose/DensePoseDataLocal
-ln -s /denseposedata DensePoseData
-ln -s /coco /densepose/detectron/datasets/data/coco
-ln -s /densepose/DensePoseData/DensePose_COCO/densepose_coco_2014_minival.json /densepose/detectron/datasets/data/coco/annotations/
-ln -s /densepose/DensePoseData/DensePose_COCO/densepose_coco_2014_train.json /densepose/detectron/datasets/data/coco/annotations/
-ln -s /densepose/DensePoseData/DensePose_COCO/densepose_coco_2014_valminusminival.json /densepose/detectron/datasets/data/coco/annotations/
+nvidia-docker run -v $DENSEPOSE/DensePoseData:/denseposedata -v /home/austin/coco:/coco -it densepose:c2-cuda9-cudnn7 bash  
+mv /densepose/DensePoseData /densepose/DensePoseDataLocal  
+ln -s /denseposedata DensePoseData  
+ln -s /coco /densepose/detectron/datasets/data/coco  
+ln -s /densepose/DensePoseData/DensePose_COCO/densepose_coco_2014_minival.json /densepose/detectron/datasets/data/coco/annotations/  
+ln -s /densepose/DensePoseData/DensePose_COCO/densepose_coco_2014_train.json /densepose/detectron/datasets/data/coco/annotations/  
+ln -s /densepose/DensePoseData/DensePose_COCO/densepose_coco_2014_valminusminival.json /densepose/detectron/datasets/data/coco/annotations/  
 
 #### Exit container and commit changes
-docker commit $(docker ps --last 1 -q) densepose:c2-cuda9-cudnn7-wdata
+docker commit $(docker ps --last 1 -q) densepose:c2-cuda9-cudnn7-wdata  
 
 
 
@@ -100,8 +100,8 @@ nvidia-docker run -v $DENSEPOSE/DensePoseData:/denseposedata -v /home/austin/coc
 
 Part 4: Visualization of outputs
 
-jupyter notebook --ip 0.0.0.0 --no-browser --allow-root
-notebooks/DensePose-RCNN-Visualize-Results.ipynb
+jupyter notebook --ip 0.0.0.0 --no-browser --allow-root  
+notebooks/DensePose-RCNN-Visualize-Results.ipynb  
 
 
 
@@ -111,5 +111,5 @@ notebooks/DensePose-RCNN-Visualize-Results.ipynb
 
 # Script
 
-if i make a script, try using popd/pushd
-# can just set everything as detached mode: -d
+if i make a script, try using popd/pushd  
+can just set everything as detached mode: -d  
