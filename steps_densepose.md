@@ -77,8 +77,8 @@ nvidia-docker run --rm -v $DENSEPOSE/DensePoseData:/denseposedata -v /home/austi
 
 #### inference
 
-##### Demo inference single image
-nvidia-docker run -rm -v $DENSEPOSE/DensePoseData:/denseposedata -v /home/austin/coco:/coco -it densepose:c2-cuda9-cudnn7-wdata \
+##### Single image inference on demo data
+nvidia-docker run --rm -v $DENSEPOSE/DensePoseData:/denseposedata -v /home/austin/coco:/coco -it densepose:c2-cuda9-cudnn7-wdata \
 python2 tools/infer_simple.py \
     --cfg configs/DensePose_ResNet101_FPN_s1x-e2e.yaml \
     --output-dir DensePoseData/infer_out/ \
@@ -86,19 +86,17 @@ python2 tools/infer_simple.py \
     --wts https://s3.amazonaws.com/densepose/DensePose_ResNet101_FPN_s1x-e2e.pkl \
     DensePoseData/demo_data/demo_im.jpg
 
-##### Single image inference on own data
-nvidia-docker run -v $DENSEPOSE/DensePoseData:/denseposedata -v /home/austin/coco:/coco  -v /home/austin/data/densepose_mydata:/densepose_mydata --rm -it -p 8888:8888 --name densepose densepose:c2-cuda9-cudnn7-wdata \
+##### Multiple image inference on own data
+DENSEPOSE=/home/austin/densepose && nvidia-docker run -v $DENSEPOSE/DensePoseData:/denseposedata -v /home/austin/coco:/coco  -v /home/austin/data/densepose_mydata:/densepose_mydata -it -p 8888:8888 --name densepose densepose:c2-cuda9-cudnn7-wdata \
     python2 tools/infer_simple.py \
     --cfg configs/DensePose_ResNet101_FPN_s1x-e2e.yaml \
     --output-dir /densepose_mydata/infer_out/ \
     --image-ext jpg \
     --wts https://s3.amazonaws.com/densepose/DensePose_ResNet101_FPN_s1x-e2e.pkl \
-    /densepose_mydata/test_imgs/A02338_10.jpg   
+    /densepose_mydata/test_imgs/
 
 
-
-
-Part 4: Visualization of outputs
+Part 4: Visualization of outputs (don't run with --rm if want to visualize in jupyter)
 
 jupyter notebook --ip 0.0.0.0 --no-browser --allow-root  
 notebooks/DensePose-RCNN-Visualize-Results.ipynb  
