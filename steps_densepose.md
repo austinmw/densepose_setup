@@ -100,6 +100,7 @@ Part 4: Visualization of outputs (don't run with --rm if want to visualize in ju
 
 jupyter notebook --ip 0.0.0.0 --no-browser --allow-root  
 notebooks/DensePose-RCNN-Visualize-Results.ipynb  
+loc: /densepose_mydata/infer_out
 
 
 
